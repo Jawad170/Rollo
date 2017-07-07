@@ -3,15 +3,14 @@ using System.Collections;
 
 public class FollowBall : MonoBehaviour 
 {
+	[Header("Basic Details")]
+	public float 		CameraDistance	=	15.0f	;
 
-	//This script is used to allow the camera to follow the ball
+	[Header("Relevant GameObjects")]
+	public GameObject 	Rollo			=	null	;
 
-	public GameObject Rollo;
-
-	public float CameraDistance = 15.0f;
-
-	public bool DebugMode = false;
-
+	[Header("Development Tools")]
+	public bool			DebugMode		= 	false	;
 
 	void FixedUpdate () 
 	{
@@ -31,6 +30,5 @@ public class FollowBall : MonoBehaviour
 		if (DebugMode) Debug.Log ("Camera: FollowBall: Follow Speed [" + FollowSpeed.ToString("##.##") + "]");
 
 		transform.position = Vector3.Lerp (transform.position, NewPos, Time.deltaTime	*	FollowSpeed);
-		
 	}
 }

@@ -4,21 +4,28 @@ using System.Collections;
 public class BasicControls : MonoBehaviour {
 
 
-	public float acceleration = 10.0f;
+	[Header("Basic Details")]
+	public float 	acceleration 	=	10.0f	;
 
-	[Header("Developer Options")]
-	public bool PhoneMode = false;
-	public bool DebugMode = false;
+	[Header("Development Tools")]
+	public  bool 	DebugMode		= 	false	;
+	private bool	PhoneMode		= 	false	;
 
-
-	void Start () 
+	void Start()
 	{
-	
+		if (PlayerPrefs.GetInt ("PhoneMode") == 1) PhoneMode = true;
 	}
 
 	void Update () 
 	{
 		if (PhoneMode) PhoneControls (); else PCControls ();
+	}
+
+	public void Stop()
+	{
+		gameObject.GetComponent<Rigidbody> ().velocity 		  = Vector3.zero;
+		gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
+		gameObject.GetComponent<Rigidbody> ().useGravity 	  = false		;
 	}
 
 	private void PhoneControls()
