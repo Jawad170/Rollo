@@ -26,6 +26,8 @@ public class BasicControls : MonoBehaviour {
 		gameObject.GetComponent<Rigidbody> ().velocity 		  = Vector3.zero;
 		gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
 		gameObject.GetComponent<Rigidbody> ().useGravity 	  = false		;
+
+		DebugMode.Log ("Ahmed is noob");
 	}
 
 	private void PhoneControls()
