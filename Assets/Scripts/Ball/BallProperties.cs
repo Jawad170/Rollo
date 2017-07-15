@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BallProperties : MonoBehaviour {
 	//Rigid Body Variables
-	Dictionary<string, float> MaindictionaryProperties = new Dictionary<string, float> ();
+	private Dictionary<string, float> MaindictionaryProperties = new Dictionary<string, float> ();
 
 	private float B_UP_mass= 0;
 	private float B_UP_drag = 0;
@@ -67,6 +67,7 @@ public class BallProperties : MonoBehaviour {
 		return MaindictionaryProperties["Mass_Rigid"];
 	}
 
+	[System.Obsolete("Method setMass is Deprecated, please use setAndApplyPropertiesOnBall instead")]
 	void setMass(float incomingMass){
 		MaindictionaryProperties["Mass_Rigid"] = incomingMass;
 	}
@@ -74,7 +75,7 @@ public class BallProperties : MonoBehaviour {
 	float getDrag(){
 		return MaindictionaryProperties["drag_Rigid"];
 	}
-
+	[System.Obsolete("Method setDrag is Deprecated, please use setAndApplyPropertiesOnBall instead")]
 	void setDrag(float incomingDrag){
 		MaindictionaryProperties["drag_Rigid"] = incomingDrag;
 	}
@@ -83,6 +84,7 @@ public class BallProperties : MonoBehaviour {
 		return MaindictionaryProperties["AngularDrag_Rigid"];
 	}
 
+	[System.Obsolete("Method setAngularDrag is Deprecated, please use setAndApplyPropertiesOnBall instead")]
 	void setAngularDrag(float incomingAngularDrag){
 		MaindictionaryProperties["AngularDrag_Rigid"] = incomingAngularDrag;
 	}
@@ -99,14 +101,17 @@ public class BallProperties : MonoBehaviour {
 		return MaindictionaryProperties["ScaleZ_Transform"];
 	} 
 
+	[System.Obsolete("Method setScaleX is Deprecated, please use setAndApplyPropertiesOnBall instead")]
 	void setScaleX(float incomingScaleX){
 		MaindictionaryProperties["ScaleX_Transform"] = incomingScaleX;
 	}
 
+	[System.Obsolete("Method setScaleY is Deprecated, please use setAndApplyPropertiesOnBall instead")]
 	void setScaleY(float incomingScaleY){
 		MaindictionaryProperties["ScaleY_Transform"] = incomingScaleY;
 	}
 
+	[System.Obsolete("Method setScaleZ is Deprecated, please use setAndApplyPropertiesOnBall instead")]
 	void setScaleZ(float incomingScaleZ){
 		MaindictionaryProperties["ScaleZ_Transform"] = incomingScaleZ;
 	}
