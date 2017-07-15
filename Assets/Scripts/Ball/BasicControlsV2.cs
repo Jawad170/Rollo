@@ -20,7 +20,7 @@ public class BasicControlsV2 : MonoBehaviour {
 		speedVariables.Add ("ReverseTopSpeed", -15.0);
 		speedVariables.Add ("TimeToReachTopSpeed",100);//((20.0/60.0)/60.0))
 		speedVariables.Add ("Gravity", System.Convert.ToDouble(Physics.gravity.y));
-		speedVariables.Add ("Friction", 0.999999);
+		speedVariables.Add ("LeftAndRightSpeed", 15.0);
 		speedVariables.Add ("ForwardForce", 100.0);
 		speedVariables.Add ("ChangeOfSpeedDecay", 0.001);
 		lastpostin = gameObject.transform.position;
@@ -28,8 +28,9 @@ public class BasicControlsV2 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (speedVariables ["CurrentDecelerationSpeed"]);
+		//Debug.Log (speedVariables ["CurrentDecelerationSpeed"]);
 
+		//---------------------------Front and Back Movement
 		if (Input.GetKey ("w")) {
 			speedVariables ["CurrentDecelerationSpeed"] = 0.0;
 			if (speedVariables ["Acceleration"] - 1.0 >= 0.0) {
@@ -62,9 +63,19 @@ public class BasicControlsV2 : MonoBehaviour {
 				float floatDeceleration = (float)speedVariables ["CurrentDecelerationSpeed"];
 				gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (0, 0, floatDeceleration));
 			}
-
 		}
+		//---------------------------Front and Back Movement finished.
 
+		//----------------------------Left and Right Movement.
+		if (Input.GetKey ("d")) {
+			float floatRight = (float)speedVariables ["LeftAndRightSpeed"];
+			gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (floatRight, 0, 0));
+		} else if (Input.GetKey ("a")) {
+			float floatLeft = - ((float)speedVariables ["LeftAndRightSpeed"]);
+			Debug.Log (floatLeft);
+			gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (floatLeft, 0, 0));
+		}
+		//-------------------------Left and Right Movement Finish
 	}
 }		
 //referencs http://www.smartconversion.com/Articles/14.aspx https://www.unitjuggler.com/convert-acceleration-from-kmmin2-to-ms2.html
