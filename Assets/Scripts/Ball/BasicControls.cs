@@ -3,21 +3,21 @@ using System.Collections;
 
 public class BasicControls : MonoBehaviour {
 
-
+	private string name;
 	[Header("Basic Details")]
 	public float 	acceleration 	=	10.0f	;
-
 	[Header("Development Tools")]
 	public  bool 	DebugMode		= 	false	;
 	private bool	PhoneMode		= 	false	;
-
 	void Start()
 	{
+		name = gameObject.GetComponent<Renderer>().material.name.ToString();
 		if (PlayerPrefs.GetInt ("PhoneMode") == 1) PhoneMode = true;
 	}
 
 	void Update () 
 	{
+		//Debug.Log (name);
 		if (PhoneMode) PhoneControls (); else PCControls ();
 	}
 
@@ -27,7 +27,6 @@ public class BasicControls : MonoBehaviour {
 		gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
 		gameObject.GetComponent<Rigidbody> ().useGravity 	  = false		;
 
-		DebugMode.Log ("Ahmed is noob");
 	}
 
 	private void PhoneControls()
