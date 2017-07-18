@@ -6,6 +6,9 @@ public class BasicControlsV2 : MonoBehaviour {
 	private CharacterController cr;
 	private Dictionary<string, double> speedVariables = new Dictionary<string, double> ();
 	private Vector3 lastpostin = Vector3.zero;
+	private float reverseControlFactor = 1;
+	private float speedControlFactor = 1;
+	private double topSpeedBackUp = 0.0;
 	// Use this for initialization
 	void Start () {
 		initializeSpeedVariables ();
@@ -25,11 +28,32 @@ public class BasicControlsV2 : MonoBehaviour {
 		speedVariables.Add ("ChangeOfSpeedDecay", 0.001);
 		lastpostin = gameObject.transform.position;
 	}
-	
+
+	public void ReverseControls(){
+		reverseControlFactor = -1;
+		//Debug.Log ("HERE" + reverseControlFactor);
+	}
+
+	public void ReverseControlResetter(){
+		reverseControlFactor = 1;
+		//Debug.Log ("HERE");
+	}
+
+	public void SlowSpeedControlFactor(float factor){
+		speedControlFactor = factor;
+		topSpeedBackUp = speedVariables["TopSpeed"];
+		speedVariables ["TopSpeed"] = speedVariables ["TopSpeed"] * System.Convert.ToDouble(factor);
+	}
+
+	public void ResetSpeedControlFactor(){
+		speedControlFactor = 1;
+		speedVariables ["TopSpeed"] = System.Convert.ToDouble(topSpeedBackUp);
+	}
+
 	// Update is called once per frame
 	void Update () {
 		//Debug.Log (speedVariables ["CurrentDecelerationSpeed"]);
-
+		
 		//---------------------------Front and Back Movement
 		if (Input.GetKey ("w")) {
 			speedVariables ["CurrentDecelerationSpeed"] = 0.0;
@@ -41,10 +65,15 @@ public class BasicControlsV2 : MonoBehaviour {
 
 			if (speedVariables ["CurrentSpeed"] < speedVariables ["TopSpeed"]) {
 				speedVariables ["CurrentSpeed"] += speedVariables ["Acceleration"];
-				float floatAcceleration = (float)speedVariables ["CurrentSpeed"];
+				float floatAcceleration = ((float)speedVariables ["CurrentSpeed"] * reverseControlFactor) * speedControlFactor;
+				Debug.Log ("fa");
 				gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (0, 0, floatAcceleration));
+
 			} else {
-				float floatAcceleration = (float)speedVariables ["TopSpeed"];
+				float floatAcceleration = ((float)speedVariables ["TopSpeed"] * reverseControlFactor) * speedControlFactor;
+				//Debug.Log (floatAcceleration);
+
+				gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (0, 0, floatAcceleration));
 			}
 
 		} else if (Input.GetKey ("s")) {
@@ -57,10 +86,10 @@ public class BasicControlsV2 : MonoBehaviour {
 
 			if (speedVariables ["CurrentDecelerationSpeed"] > speedVariables ["ReverseTopSpeed"]) {
 				speedVariables ["CurrentDecelerationSpeed"] += speedVariables ["Deceleration"];
-				float floatDeceleration = (float)speedVariables ["CurrentDecelerationSpeed"];
+				float floatDeceleration = ((float)speedVariables ["CurrentDecelerationSpeed"] * reverseControlFactor) * speedControlFactor;
 				gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (0, 0, floatDeceleration));
 			} else {
-				float floatDeceleration = (float)speedVariables ["CurrentDecelerationSpeed"];
+				float floatDeceleration = ((float)speedVariables ["CurrentDecelerationSpeed"] * reverseControlFactor) * speedControlFactor;
 				gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (0, 0, floatDeceleration));
 			}
 		}
@@ -68,11 +97,10 @@ public class BasicControlsV2 : MonoBehaviour {
 
 		//----------------------------Left and Right Movement.
 		if (Input.GetKey ("d")) {
-			float floatRight = (float)speedVariables ["LeftAndRightSpeed"];
+			float floatRight = ((float)speedVariables ["LeftAndRightSpeed"] * reverseControlFactor) * speedControlFactor;
 			gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (floatRight, 0, 0));
 		} else if (Input.GetKey ("a")) {
-			float floatLeft = - ((float)speedVariables ["LeftAndRightSpeed"]);
-			Debug.Log (floatLeft);
+			float floatLeft = - (((float)speedVariables ["LeftAndRightSpeed"]) * reverseControlFactor) * speedControlFactor;
 			gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (floatLeft, 0, 0));
 		}
 		//-------------------------Left and Right Movement Finish

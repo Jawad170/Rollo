@@ -21,17 +21,18 @@ public class BallProperties : MonoBehaviour {
 	private float B_UP_ScaleY = 0;
 	private float B_UP_ScaleZ = 0;
 
-	GameObject CurrentGameObject;
 	private Rigidbody ballRigidBody;
 	private Transform ballTransform;
 
 	// Use this for initialization
 	void Start () {
 		initializeMaindictionaryProperties ();
+		//initializeGameObject ();
+
 	}
 
-	public void setGameObject(GameObject incomingGameObject){
-		CurrentGameObject = incomingGameObject;
+	public void setGameObject(){
+		
 	}
 
 	public void backUpAllStats(){
@@ -67,15 +68,21 @@ public class BallProperties : MonoBehaviour {
 	}
 
 	public void initializeMaindictionaryProperties(){
-		MaindictionaryProperties.Add ("Mass_Rigid", 0);
-		MaindictionaryProperties.Add ("drag_Rigid", 0);
-		MaindictionaryProperties.Add ("AngularDrag_Rigid", 0);
-		MaindictionaryProperties.Add ("x_Transform", 0);
-		MaindictionaryProperties.Add ("y_Transform", 0);
-		MaindictionaryProperties.Add ("z_Transform", 0);
-		MaindictionaryProperties.Add ("x_Scale", 0);
-		MaindictionaryProperties.Add ("y_Scale", 0);
-		MaindictionaryProperties.Add ("z_Scale", 0);
+		ballRigidBody = gameObject.GetComponent<Rigidbody> ();
+		MaindictionaryProperties.Add ("Mass_Rigid", ballRigidBody.mass);
+		MaindictionaryProperties.Add ("drag_Rigid", ballRigidBody.drag);
+		MaindictionaryProperties.Add ("AngularDrag_Rigid", ballRigidBody.angularDrag);
+
+		ballTransform = gameObject.GetComponent<Transform> ();
+		MaindictionaryProperties.Add ("x_Transform", ballTransform.localPosition.x);
+		MaindictionaryProperties.Add ("y_Transform", ballTransform.localPosition.y);
+		MaindictionaryProperties.Add ("z_Transform", ballTransform.localPosition.z);
+		MaindictionaryProperties.Add ("x_Scale", ballTransform.localScale.x);
+		MaindictionaryProperties.Add ("y_Scale", ballTransform.localScale.y);
+		MaindictionaryProperties.Add ("z_Scale", ballTransform.localScale.z);
+
+		//ballTransform. = new Vector3 (MaindictionaryProperties["x_Transform"], MaindictionaryProperties["y_Transform"], MaindictionaryProperties["z_Transform"]);
+		//Debug.Log (gameObject.GetComponent<Rigidbody> ().mass.ToString ());
 
 	
 	}
@@ -166,11 +173,11 @@ public class BallProperties : MonoBehaviour {
 
 	public void initializeGameObject(){
 		//Debug.Log (CurrentGameObject.GetComponent<Rigidbody> ().mass);
-		setAndApplyPropertiesOnBall (incomingMass_Rigid: CurrentGameObject.GetComponent<Rigidbody> ().mass, incomingdrag_Rigid: CurrentGameObject.GetComponent<Rigidbody> ().drag,
-			incomingAngularDrag_Rigid: CurrentGameObject.GetComponent<Rigidbody> ().angularDrag, incoming_x_Transform: CurrentGameObject.GetComponent<Transform> ().position.x,
-			incoming_y_Transform: CurrentGameObject.GetComponent<Transform> ().position.y, incoming_z_Transform: CurrentGameObject.GetComponent<Transform> ().position.z,
-			incoming_x_Scale:CurrentGameObject.GetComponent<Transform>().localScale.x, incoming_y_Scale:CurrentGameObject.GetComponent<Transform>().localScale.y,
-			incoming_z_Scale:CurrentGameObject.GetComponent<Transform>().localScale.z, apply: false);
+		setAndApplyPropertiesOnBall (incomingMass_Rigid: gameObject.GetComponent<Rigidbody> ().mass, incomingdrag_Rigid: gameObject.GetComponent<Rigidbody> ().drag,
+			incomingAngularDrag_Rigid: gameObject.GetComponent<Rigidbody> ().angularDrag, incoming_x_Transform: gameObject.GetComponent<Transform> ().position.x,
+			incoming_y_Transform: gameObject.GetComponent<Transform> ().position.y, incoming_z_Transform: gameObject.GetComponent<Transform> ().position.z,
+			incoming_x_Scale:gameObject.GetComponent<Transform>().localScale.x, incoming_y_Scale:gameObject.GetComponent<Transform>().localScale.y,
+			incoming_z_Scale:gameObject.GetComponent<Transform>().localScale.z, apply: false);
 	}
 
 	public void printAllVariables(){
@@ -181,20 +188,36 @@ public class BallProperties : MonoBehaviour {
 	}
 
 	public void applyPropertiesOnBall(){
-		ballRigidBody = CurrentGameObject.GetComponent<Rigidbody> ();
+		ballRigidBody = gameObject.GetComponent<Rigidbody> ();
 		ballRigidBody.mass = MaindictionaryProperties["Mass_Rigid"];
 		ballRigidBody.drag = MaindictionaryProperties["drag_Rigid"];
 		ballRigidBody.angularDrag = MaindictionaryProperties["AngularDrag_Rigid"];
 
-		ballTransform = CurrentGameObject.GetComponent<Transform> ();
+		ballTransform = gameObject.GetComponent<Transform> ();
 		ballTransform.localScale += new Vector3 (MaindictionaryProperties["x_Scale"], MaindictionaryProperties["y_Scale"], MaindictionaryProperties["z_Scale"]);
 		//ballTransform. = new Vector3 (MaindictionaryProperties["x_Transform"], MaindictionaryProperties["y_Transform"], MaindictionaryProperties["z_Transform"]);
 		//Debug.Log (gameObject.GetComponent<Rigidbody> ().mass.ToString ());
 
 	}
 
+	public void ReverseControls(){
+		gameObject.GetComponent<BasicControlsV3> ().ReverseControls();
+	}
+
+	public void ReverseControlResetter(){
+		gameObject.GetComponent<BasicControlsV3> ().ReverseControlResetter ();
+	}
+
+	public void SlowSpeed(float factor){
+		gameObject.GetComponent<BasicControlsV3> ().SlowSpeedControlFactor (factor: factor);
+	}
+
+	public void ResetSpeedSlow(){
+		gameObject.GetComponent<BasicControlsV3> ().ResetSpeedControlFactor ();
+	}
+
 	public void modifyScale(float scaleX, float scaleY, float scaleZ){
-		ballTransform = CurrentGameObject.GetComponent<Transform> ();
+		ballTransform = gameObject.GetComponent<Transform> ();
 		ballTransform.localScale += new Vector3 (scaleX, scaleY, scaleZ);
 	}
 
