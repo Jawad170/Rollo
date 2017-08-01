@@ -86,7 +86,7 @@ public class BallProperties : MonoBehaviour {
 
 	
 	}
-
+		
 	// Update is called once per frame
 	void Update () {
 	}
@@ -219,6 +219,14 @@ public class BallProperties : MonoBehaviour {
 	public void modifyScale(float scaleX, float scaleY, float scaleZ){
 		ballTransform = gameObject.GetComponent<Transform> ();
 		ballTransform.localScale += new Vector3 (scaleX, scaleY, scaleZ);
+	}
+
+	public void speedMultiplier(float multiplier){
+		gameObject.GetComponent<BasicControlsV3> ().speedMultipler (multiplier: multiplier);
+	}
+
+	public void resetSpeedMultipler(float multiplier){
+		gameObject.GetComponent<BasicControlsV3> ().resetSpeedMultipler (multiplier: multiplier);
 	}
 
 	public void setAndApplyPropertiesOnBall

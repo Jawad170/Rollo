@@ -10,7 +10,7 @@ public class BasicControlsV3 : MonoBehaviour {
 	}
 
 	private void initializeSpeedVariables(){
-		speedVariables.Add ("TopSpeed", 25.0f);
+		speedVariables.Add ("TopSpeed", 15.0f);
 		speedVariables.Add ("ReverseTopSpeed", -15.0f);
 		speedVariables.Add ("LeftAndRightSpeed", 15.0f);
 		speedVariables.Add ("ReverseControlFactor", 1.0f);
@@ -39,13 +39,32 @@ public class BasicControlsV3 : MonoBehaviour {
 		speedVariables ["SpeedControlFactor"] = 1;
 	}
 
+	public void speedMultipler(float multiplier){
+		speedVariables ["TopSpeed"] *= multiplier;
+		speedVariables ["ReverseTopSpeed"] *= multiplier;
+		speedVariables ["LeftAndRightSpeed"] *= multiplier;
+		Debug.Log (speedVariables ["TopSpeed"]);
+		Debug.Log (speedVariables ["ReverseTopSpeed"]);
+		Debug.Log (speedVariables ["LeftAndRightSpeed"]);
+		Debug.Log ("---------");
+	}
+
+	public void resetSpeedMultipler(float multiplier){
+		speedVariables ["TopSpeed"] /= multiplier;
+		speedVariables ["ReverseTopSpeed"] /= multiplier;
+		speedVariables ["LeftAndRightSpeed"] /= multiplier;
+		Debug.Log (speedVariables ["TopSpeed"]);
+		Debug.Log (speedVariables ["ReverseTopSpeed"]);
+		Debug.Log (speedVariables ["LeftAndRightSpeed"]);
+	}
+
 	// Update is called once per frame
 	void Update () {
 		float forward = (speedVariables ["TopSpeed"] * speedVariables ["ReverseControlFactor"]) ;
 		float backward =  (speedVariables ["ReverseTopSpeed"] * speedVariables ["ReverseControlFactor"]) ;
 		float left = (speedVariables ["ReverseTopSpeed"] * speedVariables ["ReverseControlFactor"]);
 		float right = ((speedVariables ["ReverseTopSpeed"] * speedVariables ["ReverseControlFactor"]) ) * -1;
-		Debug.Log (forward);
+		//Debug.Log (forward);
 		if (Input.GetKey ("w")) {
 			gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (0, 0, forward));
 		} else if (Input.GetKey ("s")) {
