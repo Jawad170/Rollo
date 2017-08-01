@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BasicControlsV3 : MonoBehaviour {
 	private Dictionary<string, float> speedVariables = new Dictionary<string, float> ();
+
 	// Use this for initialization
 	void Start () {
 		initializeSpeedVariables ();
@@ -15,6 +16,10 @@ public class BasicControlsV3 : MonoBehaviour {
 		speedVariables.Add ("LeftAndRightSpeed", 15.0f);
 		speedVariables.Add ("ReverseControlFactor", 1.0f);
 		speedVariables.Add ("SpeedControlFactor", 1.0f);
+	}
+
+	public void upwardsWinds(float windPower){
+		gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (0, windPower, 0));
 	}
 
 	public void ReverseControls(){
@@ -65,11 +70,14 @@ public class BasicControlsV3 : MonoBehaviour {
 		float left = (speedVariables ["ReverseTopSpeed"] * speedVariables ["ReverseControlFactor"]);
 		float right = ((speedVariables ["ReverseTopSpeed"] * speedVariables ["ReverseControlFactor"]) ) * -1;
 		//Debug.Log (forward);
+
 		if (Input.GetKey ("w")) {
 			gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (0, 0, forward));
 		} else if (Input.GetKey ("s")) {
 			gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (0, 0, backward));
-		}
+		} 
+		//gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+
 
 		if (Input.GetKey ("a")) {
 			gameObject.GetComponent<Rigidbody> ().AddForce (new Vector3 (left, 0, 0));

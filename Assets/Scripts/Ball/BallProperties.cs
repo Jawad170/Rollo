@@ -200,6 +200,14 @@ public class BallProperties : MonoBehaviour {
 
 	}
 
+	//---------------------------------- Environmental Effects
+
+	public void upwardsWinds(float windPower){
+		gameObject.GetComponent<BasicControlsV3> ().upwardsWinds (windPower: windPower);
+	}
+
+	//----------------------------------End of Environmantal effects
+
 	public void ReverseControls(){
 		gameObject.GetComponent<BasicControlsV3> ().ReverseControls();
 	}
