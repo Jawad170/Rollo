@@ -7,6 +7,12 @@ public class CameraScript3 : MonoBehaviour {
 	public float radius = 15.0f;
 	private double phi = 270.0;
 	public double phiSensetivity = 1.0;
+	private float shake = 0.0f;
+	public float shakeAmount = 0.5f;
+	public float shakeDuration = 0.5f;
+	private bool startShaking = false;
+	private Vector3 originalPosition = Vector3.zero;
+	private float decreaseFactor = 1.0f;
 	private Vector3 oldrollo =Vector3.zero;
 	// Use this for initialization
 	void Start () {
@@ -18,6 +24,11 @@ public class CameraScript3 : MonoBehaviour {
 		calculatePoint(System.Convert.ToSingle(rollo.GetComponent<Transform> ().position.x) ,System.Convert.ToSingle(rollo.GetComponent<Transform> ().position.z), out x, out y);
 		gameObject.GetComponent<Transform> ().position = new Vector3 (x, 7, y);
 
+	}
+
+	public void cameraJitter(){
+		shake = shakeDuration;
+		startShaking = false;
 	}
 
 	private double phiInceremter(){
@@ -46,12 +57,27 @@ public class CameraScript3 : MonoBehaviour {
 	}
 
 	private void calculatePoint (float incomingX, float incomingZ, out float x, out float y){
-		Debug.Log (( (degreesToRadians (phi))) + "INPHI");
+		//Debug.Log (( (degreesToRadians (phi))) + "INPHI");
 		x = incomingX + (radius * System.Convert.ToSingle((System.Math.Cos (degreesToRadians(phi)))));
 		y= incomingZ + (radius * System.Convert.ToSingle((System.Math.Sin (degreesToRadians(phi)))));
 	} 
 	// Update is called once per frame
 	void Update () {
+		if (shake > 0) {
+			if (startShaking == false) {
+				originalPosition = gameObject.GetComponent<Transform> ().position;
+				startShaking = true;
+			}
+			gameObject.transform.localPosition +=Random.insideUnitSphere * shakeAmount;
+			shake -= Time.deltaTime * decreaseFactor;
+			if (shake <= 0) {
+				gameObject.GetComponent<Transform> ().position = originalPosition;
+			}
+		} else {
+			shake = 0.0f;
+		}
+
+
 		if (oldrollo != Vector3.zero) {
 			if (oldrollo != rollo.transform.position) {
 				Vector3 difference = rollo.transform.position - oldrollo;
